@@ -1,4 +1,4 @@
-param([ValidateSet('core','android','both')][string]$Target = 'android')
+param([ValidateSet('core','android','windows','both')][string]$Target = 'android')
 $ErrorActionPreference = 'Stop'
 $root = Resolve-Path (Join-Path $PSScriptRoot '..')
 $stage = Join-Path $root 'dist\\kit'
@@ -13,7 +13,7 @@ Copy-Item (Join-Path $root 'scripts\\install.ps1') (Join-Path $stage 'install.ps
 Set-Content (Join-Path $stage 'install.cmd') '@echo off' -Encoding ascii
 Add-Content (Join-Path $stage 'install.cmd') 'powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"' -Encoding ascii
 if (Test-Path $env:PUB_CACHE) { Copy-Item $env:PUB_CACHE (Join-Path $stage 'pub-cache') -Recurse }
-if ($Target -ne 'core') {
+if ($Target -eq 'android' -or $Target -eq 'both') {
   if (-not $env:ANDROID_HOME) { throw 'ANDROID_HOME not set' }
   $sdkOut = Join-Path $stage 'android-sdk'
   New-Item -ItemType Directory $sdkOut -Force | Out-Null
