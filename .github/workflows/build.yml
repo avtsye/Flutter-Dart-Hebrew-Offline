@@ -34,8 +34,13 @@ jobs:
           flutter config --no-analytics
           flutter precache --windows --android
           flutter pub get --directory samples/hello_flutter
-          flutter build windows --debug --target lib/main.dart --project-dir samples/hello_flutter
-          if ($LASTEXITCODE -ne 0) { throw "Windows sample build failed" }
+          Push-Location samples/hello_flutter
+          try {
+            flutter create --platforms=windows .
+            if ($LASTEXITCODE -ne 0) { throw "Project scaffolding failed" }
+            flutter build windows --debug
+            if ($LASTEXITCODE -ne 0) { throw "Windows sample build failed" }
+          } finally { Pop-Location }
       - name: Prepare Android SDK
         if: inputs.target != 'core'
         shell: pwsh
