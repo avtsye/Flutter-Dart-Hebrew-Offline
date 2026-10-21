@@ -3,8 +3,8 @@
 מיזם קהילתי לאריזת סביבת פיתוח Flutter ו-Dart לשימוש במחשבים עם חיבור מוגבל לאינטרנט.
 
 ## מסלולים
-- **Core** — Flutter (כולל Dart), VS Code והרחבות Flutter/Dart, מדריכים בעברית.
-- **Android** — Core + Android SDK, Build Tools, Platform Tools ומטמון ראשוני.
+- **Core** — Flutter (כולל Dart), פרויקט הדגמה ומדריכים בעברית. הוספת VS Code והרחבות אופליין מתוכננת לשלב הבא.
+- **Android** — Core + רכיבי Android SDK בסיסיים ומטמון Flutter ראשוני; מטמון Gradle מלא טרם נכלל.
 - **Both** — מסלול Android יחד עם הכנה לפיתוח Windows. **חשוב:** בניית יישומי Windows דורשת בנוסף רכיבי Visual Studio C++ מתאימים במחשב. רכיבים אלו אינם כלולים במתקין הראשוני, ולכן בניית Windows אינה מובטחת במחשב מנותק עד להכנת Layout מורשה שלהם.
 
 ## הוראות שימוש
@@ -19,7 +19,7 @@
 - Android SDK וחבילות Gradle נוספות תלויות בפרויקט, בגרסאות ובפלאגינים; לא כל אפליקציה חדשה תיבנה ללא אינטרנט.
 - בהתקנת Android במחשב חדש יתכן צורך באישור רישיונות SDK.
 - כדי לבנות Windows יש להכין בנפרד Visual Studio 2022 עם Desktop development with C++ ורכיבי MSVC/Windows SDK. אין להעביר קבצים קנייניים בלי לוודא הרשאה ותנאי שימוש.
-- הרחבות VS Code נארזות כ-VSIX כדי שאפשר יהיה להתקינן ללא רשת.
+- VS Code והרחבות VSIX טרם נארזו בגרסת התשתית; יש להוסיפם בהמשך.
 - יש לעיין ברישיונות Flutter, Dart, VS Code, Android SDK וכלי צד שלישי לפני הפצה פומבית.
 
 מדריך: [docs/index.html](docs/index.html)
