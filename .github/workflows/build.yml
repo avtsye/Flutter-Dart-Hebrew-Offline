@@ -1,5 +1,9 @@
 name: Build offline Windows kit
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/build.yml'
   workflow_dispatch:
     inputs:
       target:
@@ -15,7 +19,7 @@ jobs:
     permissions:
       contents: read
     env:
-      KIT_TARGET: ${{ inputs.target }}
+      KIT_TARGET: ${{ inputs.target || 'both' }}
       PUB_CACHE: ${{ github.workspace }}\\.pub-cache
     steps:
       - uses: actions/checkout@v4
@@ -43,7 +47,7 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw "Windows sample build failed" }
           } finally { Pop-Location }
       - name: Prepare Android SDK
-        if: inputs.target == 'android' || inputs.target == 'both'
+        if: github.event_name == 'push' || inputs.target == 'android' || inputs.target == 'both'
         shell: pwsh
         run: |
           $sdk = $env:ANDROID_HOME
@@ -58,8 +62,8 @@ jobs:
           ./scripts/pack.ps1 -Target $env:KIT_TARGET
       - uses: actions/upload-artifact@v4
         with:
-          name: Flutter-Dart-Hebrew-${{ inputs.target }}
-          path: dist/Flutter-Dart-Hebrew-${{ inputs.target }}.zip
+          name: Flutter-Dart-Hebrew-${{ env.KIT_TARGET }}
+          path: dist/Flutter-Dart-Hebrew-${{ env.KIT_TARGET }}.zip
           if-no-files-found: error
           compression-level: 0
           retention-days: 14
