@@ -4,11 +4,12 @@
 
 ## מסלולים
 - **Core** — Flutter (כולל Dart), פרויקט הדגמה ומדריכים בעברית. הוספת VS Code והרחבות אופליין מתוכננת לשלב הבא.
+- **Windows** — Core + Flutter Windows engine artifacts. Native Visual Studio C++ build tools are still required separately.
 - **Android** — Core + רכיבי Android SDK בסיסיים ומטמון Flutter ראשוני; מטמון Gradle מלא טרם נכלל.
 - **Both** — מסלול Android יחד עם הכנה לפיתוח Windows. **חשוב:** בניית יישומי Windows דורשת בנוסף רכיבי Visual Studio C++ מתאימים במחשב. רכיבים אלו אינם כלולים במתקין הראשוני, ולכן בניית Windows אינה מובטחת במחשב מנותק עד להכנת Layout מורשה שלהם.
 
 ## הוראות שימוש
-1. בדף **Actions** הפעילו **Build offline Windows kit** ובחרו מסלול.
+1. בדף **Actions** הפעילו **Build offline Windows kit** ובחרו core / android / windows / both.
 2. לאחר שהריצה מסתיימת הורידו Artifact מסוג ZIP. ניתן להעביר אותו בדיסק-און-קי.
 3. חלצו את ה-ZIP והפעילו את `install.cmd` מתוך התיקייה. המתקין מעתיק את הערכה לנתיב שהמשתמש בוחר ומגדיר את PATH עבור המשתמש.
 4. פתחו חלון PowerShell חדש והריצו `flutter doctor -v`.
