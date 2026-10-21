@@ -1,0 +1,59 @@
+name: Build offline Windows kit
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Package edition'
+        required: true
+        type: choice
+        options: [core, android, both]
+        default: android
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 330
+    permissions:
+      contents: read
+    env:
+      KIT_TARGET: ${{ inputs.target }}
+      PUB_CACHE: ${{ github.workspace }}\\.pub-cache
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: false
+      - name: Check tool versions
+        shell: pwsh
+        run: |
+          flutter --version
+          dart --version
+      - name: Prepare Flutter engine artifacts and packages
+        shell: pwsh
+        run: |
+          flutter config --no-analytics
+          flutter precache --windows --android
+          flutter pub get --directory samples/hello_flutter
+          flutter build windows --debug --target lib/main.dart --project-dir samples/hello_flutter
+          if ($LASTEXITCODE -ne 0) { throw "Windows sample build failed" }
+      - name: Prepare Android SDK
+        if: inputs.target != 'core'
+        shell: pwsh
+        run: |
+          $sdk = $env:ANDROID_HOME
+          if (-not $sdk) { throw "ANDROID_HOME is missing" }
+          $sdkmanager = Join-Path $sdk 'cmdline-tools\\latest\\bin\\sdkmanager.bat'
+          if (!(Test-Path $sdkmanager)) { throw "sdkmanager was not found: $sdkmanager" }
+          & $sdkmanager 'platform-tools' 'platforms;android-35' 'build-tools;35.0.0'
+          if ($LASTEXITCODE -ne 0) { throw "SDK install failed" }
+      - name: Create bundle
+        shell: pwsh
+        run: |
+          ./scripts/pack.ps1 -Target $env:KIT_TARGET
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Flutter-Dart-Hebrew-${{ inputs.target }}
+          path: dist/Flutter-Dart-Hebrew-${{ inputs.target }}.zip
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
