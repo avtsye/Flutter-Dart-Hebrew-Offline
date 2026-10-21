@@ -1,0 +1,11 @@
+name: hello_offline_flutter
+description: Small example for the offline kit
+publish_to: none
+version: 1.0.0+1
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+flutter:
+  uses-material-design: true
