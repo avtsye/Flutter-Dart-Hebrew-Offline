@@ -6,7 +6,7 @@ on:
         description: 'Package edition'
         required: true
         type: choice
-        options: [core, android, both]
+        options: [core, android, windows, both]
         default: android
 jobs:
   build:
@@ -33,7 +33,8 @@ jobs:
         run: |
           flutter config --no-analytics
           flutter precache --windows --android
-          flutter pub get --directory samples/hello_flutter
+          Push-Location samples/hello_flutter
+          try { flutter pub get; if ($LASTEXITCODE -ne 0) { throw 'pub get failed' } } finally { Pop-Location }
           Push-Location samples/hello_flutter
           try {
             flutter create --platforms=windows .
@@ -42,7 +43,7 @@ jobs:
             if ($LASTEXITCODE -ne 0) { throw "Windows sample build failed" }
           } finally { Pop-Location }
       - name: Prepare Android SDK
-        if: inputs.target != 'core'
+        if: inputs.target == 'android' || inputs.target == 'both'
         shell: pwsh
         run: |
           $sdk = $env:ANDROID_HOME
